@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:BorderContainer xmlns:fx="http://ns.adobe.com/mxml/2009" 
+				   xmlns:s="library://ns.adobe.com/flex/spark" 
+				   minHeight="480" minWidth="480" 
+				   dropShadowVisible="true" 
+				   backgroundAlpha="0" 
+				   xmlns:mx="library://ns.adobe.com/flex/mx"
+				   xmlns:layers="layers.*">
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	
+	<fx:Script>
+		<![CDATA[
+			[Bindable]
+			public var rows : int = 10; //20
+			[Bindable]
+			public var columns : int = 10; //24
+			[Bindable]
+			public var cellWidth : int = 48;
+			[Bindable]
+			public var cellHeight : int = 48;
+		]]>
+	</fx:Script>
+	
+    <s:BorderContainer backgroundColor="0x333333" backgroundAlpha="0.5"
+					   width="100%" height="100%" />
+	
+	
+	<layers:LineLayer width="100%" height="100%" cellHeight="{cellHeight}" cellWidth="{cellWidth}"
+					 columns="{columns}" rows="{rows}" id="lineLayer" />
+	
+</s:BorderContainer>

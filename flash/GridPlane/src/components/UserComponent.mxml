@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/mx" xmlns:components="components.*">
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	
+	<mx:Image width="50" height="50" source="http://tp2.sinaimg.cn/1656758741/50/1288064359/1" />
+	<components:LevelComponent curExp="70" maxExp="100"  x="62" y="6"/>
+	<s:Label x="5" y="52" id="username" text="寂寞的超超" color="#FB5116"/>
+	<s:Label x="167" y="7" text="5" id="level" fontWeight="bold" fontSize="17"/>
+	<s:Label x="61" y="28" text="矿产：500" color="#1409FA"/>
+	
+	
+</s:Group>

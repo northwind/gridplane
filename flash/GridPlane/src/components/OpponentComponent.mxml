@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/mx" xmlns:components="components.*" width="212">
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	
+	<mx:Image width="50" height="50" source="http://tp4.sinaimg.cn/1678314171/50/1283204436/1" right="0" bottom="10"/>
+	<components:LevelComponent curExp="70" maxExp="100"  x="61" y="7"/>
+	<s:Label id="username" text="刘新刚-新文革时代" color="#FB5116" right="0" bottom="0"/>
+	<s:Label x="40" y="7" text="5" id="level" fontWeight="bold" fontSize="17" width="12"/>
+	<s:Label x="100" y="27" text="矿产：500" color="#1409FA"/>
+	
+	
+</s:Group>
