@@ -1,0 +1,25 @@
+
+[
+	{
+		name	: "aaaaa",
+		avator  : "http:\/\/tp2.sinaimg.cn\/1656758741\/50\/1288064359\/1",
+		level   : 10,
+		money   : 10000,
+		curExp  : 999
+	},
+	{
+		name	: "bbbbb",
+		avator  : "http:\/\/tp2.sinaimg.cn\/1656758741\/50\/1288064359\/1",
+		level   : 11,
+		money   : 10000,
+		curExp  : 999	
+	},
+	{
+		name	: "ccccc",
+		avator  : "http:\/\/tp2.sinaimg.cn\/1656758741\/50\/1288064359\/1",
+		level   : 12,
+		money   : 10000,
+		curExp  : 999	
+	}
+]
+
