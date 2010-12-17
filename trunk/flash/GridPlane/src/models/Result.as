@@ -1,51 +1,18 @@
-/**
- * This is a generated sub-class of _Result.as and is intended for behavior
- * customization.  This class is only generated when there is no file already present
- * at its target location.  Thus custom behavior that you add here will survive regeneration
- * of the super-class. 
- *
- * NOTE: Do not manually modify the RemoteClass mapping unless
- * your server representation of this class has changed and you've 
- * updated your ActionScriptGeneration,RemoteClass annotation on the
- * corresponding entity 
- **/ 
- 
 package models
 {
-
-import com.adobe.fiber.core.model_internal;
-
-public class Result extends _Super_Result
-{
-    /** 
-     * DO NOT MODIFY THIS STATIC INITIALIZER - IT IS NECESSARY
-     * FOR PROPERLY SETTING UP THE REMOTE CLASS ALIAS FOR THIS CLASS
-     *
-     **/
-     
-    /**
-     * Calling this static function will initialize RemoteClass aliases
-     * for this value object as well as all of the value objects corresponding
-     * to entities associated to this value object's entity.  
-     */     
-    public static function _initRemoteClassAlias() : void
-    {
-        _Super_Result.model_internal::initRemoteClassAliasSingle(models.Result);
-        _Super_Result.model_internal::initRemoteClassAliasAllRelated();
-    }
-     
-    model_internal static function initRemoteClassAliasSingleChild() : void
-    {
-        _Super_Result.model_internal::initRemoteClassAliasSingle(models.Result);
-    }
-    
-    {
-        _Super_Result.model_internal::initRemoteClassAliasSingle(models.Result);
-    }
-    /** 
-     * END OF DO NOT MODIFY SECTION
-     *
-     **/    
-}
-
+	public class Result
+	{
+		public static var ERROR:int = 500;
+		
+		public var code:int;
+		public var msg:*;
+		
+		public function Result(  )
+		{
+			
+		}
+		
+		
+		
+	}
 }
