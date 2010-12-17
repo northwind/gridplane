@@ -2,12 +2,14 @@
 <Objects 
 	xmlns:fx="http://ns.adobe.com/mxml/2009"
 	xmlns="http://www.spicefactory.org/parsley" 
-	xmlns:services="services.*" xmlns:components="components.*">
+	xmlns:services="services.*" xmlns:components="components.*" xmlns:layers="layers.*">
 	
 	<fx:Declarations>
 		
 		<services:ServerService />
 		<components:FriendsComponent />
+		<layers:PlaneLayer />
+		<components:ConsoleComponent />
 		
 	</fx:Declarations>
 	
