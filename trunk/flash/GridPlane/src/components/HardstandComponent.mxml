@@ -7,7 +7,6 @@
 				   xmlns:mx="library://ns.adobe.com/flex/mx"
 				   xmlns:layers="layers.*">
 	<fx:Declarations>
-		<!-- Place non-visual elements (e.g., services, value objects) here -->
 	</fx:Declarations>
 	
 	<fx:Script>

@@ -13,7 +13,7 @@ package services
 	
 	public class ServerService extends EventDispatcher
 	{
-		private var uid:String;
+		public var uid:String = "";
 		private var prefix:String = "http://plane.sinaapp.com/staticdata/";
 			
 		public function getFriends() : void
@@ -22,6 +22,28 @@ package services
 			
 			var request:URLRequest = new URLRequest( prefix + "getFriends.json" );
 			request.method= "GET";
+			
+			loader.load( request ); 
+		}
+
+		public function setPlane( data:String ) : void
+		{
+			var loader:URLLoader = getLoader();
+			
+			var request:URLRequest = new URLRequest( prefix + "setPlane.json" );
+			request.method= "POST";
+			request.data.data = data;
+			
+			loader.load( request ); 
+		}
+
+		public function getPlane() : void
+		{
+			var loader:URLLoader = getLoader();
+			
+			var request:URLRequest = new URLRequest( prefix + "getPlane.json" );
+			request.method= "GET";
+			request.data.uid = uid;
 			
 			loader.load( request ); 
 		}
