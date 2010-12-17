@@ -1,29 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
 <s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
-		 xmlns:s="library://ns.adobe.com/flex/spark" 
-		 width="250"
-		 height="380" 
-		 xmlns:mx="library://ns.adobe.com/flex/mx" xmlns:friendsservice="services.friendsservice.*"
+		 xmlns:s="library://ns.adobe.com/flex/spark"
+		 xmlns:sf="http://www.spicefactory.org/parsley"
+		 width="250"  height="380" 
+		 xmlns:mx="library://ns.adobe.com/flex/mx" 
+		 xmlns:friendsservice="services.friendsservice.*"
+		 addedToStage="group1_addedToStageHandler(event)" 
 		 creationComplete="group1_creationCompleteHandler(event)" 
 		 >
 	<fx:Script>
 		<![CDATA[
+			import events.ResultEvent;
+			
+			import mx.collections.ArrayList;
 			import mx.controls.Alert;
 			import mx.events.FlexEvent;
 			
+			import services.ServerService;
+			
+			private var list:ArrayList;
+			
+			[Inject]
+			public var ss:ServerService;
+			
 			protected function group1_creationCompleteHandler(event:FlexEvent):void
 			{
+
+			}
+
+			private function onFriendsOKHandler( event:ResultEvent ) :void
+			{
+				dataGroup.dataProvider = new ArrayList( event.msg as Array );
+			}
+			
+
+			protected function group1_addedToStageHandler(event:Event):void
+			{
+				//初始化IOC 这句话必须加在addedToStage事件中
+				dispatchEvent(new Event('configureIOC', true));
+				
+				ss.addEventListener(ResultEvent.FriendsOK, onFriendsOKHandler );
+				
+				ss.getFriends();
 			}
 
 		]]>
 	</fx:Script>
 	<fx:Declarations>
-		<!-- Place non-visual elements (e.g., services, value objects) here -->
+		<sf:Configure/>
 	</fx:Declarations>
 	
 	<s:BorderContainer width="100%"  height="100%" backgroundColor="0xaaaaaa" alpha="0.3" />
 	
-	<s:DataGroup  
+	<s:DataGroup  id="dataGroup" 
 				  itemRenderer="components.FriendItemRender" >
 		<s:layout>
 			<s:VerticalLayout gap="10" />
