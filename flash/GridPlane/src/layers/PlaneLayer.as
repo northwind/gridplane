@@ -6,12 +6,15 @@ package layers
 	import flash.events.KeyboardEvent;
 	import flash.events.MouseEvent;
 	
+	import models.Plane;
+	
 	import mx.core.UIComponent;
 
 	public class PlaneLayer extends UIComponent
 	{
 		public var flying:Boolean = false;
-		public var plane:Bitmap;
+		public var planeBitmap:Bitmap;
+		public var plane:Plane;
 		
 		public function PlaneLayer()
 		{
@@ -44,7 +47,7 @@ package layers
 		
 		private function onMouseMove( event:MouseEvent ):void
 		{
-			if ( this.plane )
+			if ( this.planeBitmap )
 				setPos();
 		}
 
@@ -63,8 +66,8 @@ package layers
 		
 		private function setPos():void
 		{
-			this.x = this.stage.mouseX - this.plane.width / 2;
-			this.y = this.stage.mouseY - this.plane.height / 2;
+			this.x = this.stage.mouseX - this.planeBitmap.width / 2;
+			this.y = this.stage.mouseY - this.planeBitmap.height / 2;
 		}
 		
 		override protected function updateDisplayList(unscaledWidth:Number,
@@ -73,18 +76,18 @@ package layers
 			trace("updateDisplayList");
 			super.updateDisplayList( unscaledWidth, unscaledHeight );
 			
-			if ( this.plane ){
-				this.addChild( this.plane );
+			if ( this.planeBitmap ){
+				this.addChild( this.planeBitmap );
 			}
 		}
 		
 		public function removePlane() : void
 		{
 			trace("removePlane");
-			if ( this.plane ){
-				this.removeChild( this.plane );
-				this.plane.bitmapData.dispose();
-				this.plane = null;
+			if ( this.planeBitmap ){
+				this.removeChild( this.planeBitmap );
+				this.planeBitmap.bitmapData.dispose();
+				this.planeBitmap = null;
 			} 		
 			this.flying = false;
 			this.invalidateDisplayList();
@@ -93,15 +96,15 @@ package layers
 			this.dispatchEvent( new Event( Event.CANCEL ) );
 		}
 		
-		public function setPlane( data:BitmapData ) : void
+		public function setPlane( plane:Plane ) : void
 		{
 			trace("setPlane");
-			if ( this.plane ){
-				this.removeChild( this.plane );
+			if ( this.planeBitmap ){
+				this.removeChild( this.planeBitmap );
 			} 
 			
 			this.flying = true;
-			this.plane = new Bitmap( data.clone() );
+			this.planeBitmap = new Bitmap( plane.bitmapData.clone() );
 			
 			this.invalidateDisplayList();
 			

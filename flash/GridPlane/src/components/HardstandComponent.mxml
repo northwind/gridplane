@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <s:BorderContainer xmlns:fx="http://ns.adobe.com/mxml/2009" 
 				   xmlns:s="library://ns.adobe.com/flex/spark" 
-				   width="480" height="{ rows* cellHeight }" 
+				   width="{ hardstand.columns * hardstand.cellWidth }" height="{ hardstand.rows* hardstand.cellHeight }" 
 				   dropShadowVisible="true" 
 				   backgroundAlpha="0" 
 				   xmlns:mx="library://ns.adobe.com/flex/mx"
@@ -15,21 +15,17 @@
 	
 	<fx:Script>
 		<![CDATA[
+			import models.Hardstand;
 			import mx.core.UIComponent;
-			[Bindable]
-			public var rows : int = 10; //20
-			[Bindable]
-			public var columns : int = 10; //24
-			[Bindable]
-			public var cellWidth : int = 48;
-			[Bindable]
-			public var cellHeight : int = 48;
-			
 			import layers.PlaneLayer;
 			
 			[Inject]
 			public var planeLayer:PlaneLayer;
 
+			[Inject]
+			[Bindable]
+			public var hardstand:Hardstand;
+			
 			protected function bordercontainer1_clickHandler(event:MouseEvent):void
 			{
 				// TODO Auto-generated method stub
@@ -42,8 +38,8 @@
 			protected function bordercontainer1_mouseMoveHandler(event:MouseEvent):void
 			{
 				if ( planeLayer.flying ){
-					var x:int = (this.mouseX - planeLayer.plane.width / 2) / cellWidth;
-					var y:int = (this.mouseY - planeLayer.plane.height/ 2) / cellHeight;
+					var x:int = (this.mouseX - planeLayer.planeBitmap.width / 2) / hardstand.cellWidth;
+					var y:int = (this.mouseY - planeLayer.planeBitmap.height/ 2) / hardstand.cellHeight;
 					
 					//坐标值更改了
 					if ( oldX != x || oldY != y ){
@@ -51,16 +47,16 @@
 						oldY = y;
 						
 						//如果超出边界
-						if ( ((x + 5) > columns) || ((y + 4) > rows) ){
+						if ( ((x + 5) > hardstand.columns) || ((y + 4) > hardstand.rows) ){
 							mirror.visible = false;
 						}else{
 							if ( !setMirror ){
 								setMirror = true;
-								mirror.source = new Bitmap( planeLayer.plane.bitmapData.clone() );
+								mirror.source = new Bitmap( planeLayer.planeBitmap.bitmapData.clone() );
 							}
 							
-							mirror.x = x * cellWidth;
-							mirror.y = y * cellHeight;
+							mirror.x = x * hardstand.cellWidth;
+							mirror.y = y * hardstand.cellHeight;
 							if ( mirror.visible == false )
 								mirror.visible = true;
 						}
@@ -97,8 +93,8 @@
 					   width="100%" height="100%" />
 	
 	
-	<layers:LineLayer width="100%" height="100%" cellHeight="{cellHeight}" cellWidth="{cellWidth}"
-					 columns="{columns}" rows="{rows}" id="lineLayer" />
+	<layers:LineLayer width="100%" height="100%" cellHeight="{hardstand.cellHeight}" cellWidth="{hardstand.cellWidth}"
+					 columns="{hardstand.columns}" rows="{hardstand.rows}" id="lineLayer" />
 	
 	<mx:Image id="mirror" alpha="0.5" visible="false" />
 	
