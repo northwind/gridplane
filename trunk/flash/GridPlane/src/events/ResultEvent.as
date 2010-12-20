@@ -6,6 +6,10 @@ package events
 	{
 		public static var EROOR :String = "result error";
 		public static var OK	 :String = "1";
+		
+		public static var SetPlaneOK	 :String = "1";
+		public static var GetPlaneOK	 :String = "2";
+		
 		public static var FriendsOK	 :String = "10";
 		
 		public var code:String;

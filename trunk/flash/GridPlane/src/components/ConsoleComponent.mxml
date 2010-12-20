@@ -10,6 +10,8 @@
 		<![CDATA[
 			import layers.PlaneLayer;
 			
+			import models.Plane;
+			
 			import mx.core.BitmapAsset;
 			
 			import skins.SavePlaneButtnSkin;
@@ -24,7 +26,10 @@
 			{
 				if ( !planeLayer.flying ){
 					var bitmapAsset:BitmapAsset = new planeSource() as BitmapAsset ;
-					planeLayer.setPlane( bitmapAsset.bitmapData );
+					var plane:Plane = new Plane();
+					plane.bitmapData = bitmapAsset.bitmapData;
+					
+					planeLayer.setPlane( plane );
 				}else{
 					planeLayer.removePlane();
 				}
