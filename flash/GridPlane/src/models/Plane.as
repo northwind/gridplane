@@ -75,5 +75,10 @@ package models
 				}
 			}
 		}
+		
+		public function get degree() : int
+		{
+			return _degree;
+		}
 	}
 }

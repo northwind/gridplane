@@ -72,6 +72,7 @@
 				dispatchEvent(new Event('configureIOC', true));
 				
 				planeLayer.addEventListener(Event.CANCEL, onPlaneCancel );
+				this.stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown );	
 			}
 			
 			private function onPlaneCancel( event:Event ):void
@@ -86,6 +87,14 @@
 				setMirror = false;
 			}
 
+			private function onKeyDown( event:KeyboardEvent ):void
+			{
+				//R
+				if ( event.keyCode == 82 && planeLayer.flying ){
+					//顺时针旋转90度
+					planeLayer.route();
+				}
+			}
 		]]>
 	</fx:Script>
 	
