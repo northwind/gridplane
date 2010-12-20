@@ -1,16 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <s:BorderContainer xmlns:fx="http://ns.adobe.com/mxml/2009" 
 				   xmlns:s="library://ns.adobe.com/flex/spark" 
-				   minHeight="480" minWidth="480" 
+				   width="480" height="{ rows* cellHeight }" 
 				   dropShadowVisible="true" 
 				   backgroundAlpha="0" 
 				   xmlns:mx="library://ns.adobe.com/flex/mx"
+				   click="bordercontainer1_clickHandler(event)" 
+				   addedToStage="bordercontainer1_addedToStageHandler(event)" 
+				   rollOut="bordercontainer1_rollOutHandler(event)" 
+				   mouseMove="bordercontainer1_mouseMoveHandler(event)" 				    
 				   xmlns:layers="layers.*">
 	<fx:Declarations>
 	</fx:Declarations>
 	
 	<fx:Script>
 		<![CDATA[
+			import mx.core.UIComponent;
 			[Bindable]
 			public var rows : int = 10; //20
 			[Bindable]
@@ -19,6 +24,72 @@
 			public var cellWidth : int = 48;
 			[Bindable]
 			public var cellHeight : int = 48;
+			
+			import layers.PlaneLayer;
+			
+			[Inject]
+			public var planeLayer:PlaneLayer;
+
+			protected function bordercontainer1_clickHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+			}
+
+			private var oldX:int;
+			private var oldY:int;
+			private var setMirror:Boolean = false;
+			
+			protected function bordercontainer1_mouseMoveHandler(event:MouseEvent):void
+			{
+				if ( planeLayer.flying ){
+					var x:int = (this.mouseX - planeLayer.plane.width / 2) / cellWidth;
+					var y:int = (this.mouseY - planeLayer.plane.height/ 2) / cellHeight;
+					
+					//坐标值更改了
+					if ( oldX != x || oldY != y ){
+						oldX = x;
+						oldY = y;
+						
+						//如果超出边界
+						if ( ((x + 5) > columns) || ((y + 4) > rows) ){
+							mirror.visible = false;
+						}else{
+							if ( !setMirror ){
+								setMirror = true;
+								mirror.source = new Bitmap( planeLayer.plane.bitmapData.clone() );
+							}
+							
+							mirror.x = x * cellWidth;
+							mirror.y = y * cellHeight;
+							if ( mirror.visible == false )
+								mirror.visible = true;
+						}
+					}
+					
+				} else {
+					mirror.visible = false;
+				}
+			}
+
+			protected function bordercontainer1_addedToStageHandler(event:Event):void
+			{
+				dispatchEvent(new Event('configureIOC', true));
+				
+				planeLayer.addEventListener(Event.CANCEL, onPlaneCancel );
+			}
+			
+			private function onPlaneCancel( event:Event ):void
+			{
+				mirror.visible = false;
+				setMirror = false;
+			}
+
+			protected function bordercontainer1_rollOutHandler(event:MouseEvent):void
+			{
+				mirror.visible = false;
+				setMirror = false;
+			}
+
 		]]>
 	</fx:Script>
 	
@@ -28,5 +99,7 @@
 	
 	<layers:LineLayer width="100%" height="100%" cellHeight="{cellHeight}" cellWidth="{cellWidth}"
 					 columns="{columns}" rows="{rows}" id="lineLayer" />
+	
+	<mx:Image id="mirror" alpha="0.5" visible="false" />
 	
 </s:BorderContainer>

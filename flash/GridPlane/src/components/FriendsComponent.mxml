@@ -6,6 +6,9 @@
 		 xmlns:mx="library://ns.adobe.com/flex/mx" 
 		 xmlns:friendsservice="services.friendsservice.*"
 		 addedToStage="group1_addedToStageHandler(event)" 
+		 rollOver="group1_rollOverHandler(event)" 
+		 rollOut="group1_rollOutHandler(event)" 
+		 click="group1_clickHandler(event)" 
 		 creationComplete="group1_creationCompleteHandler(event)" 
 		 >
 	<fx:Script>
@@ -15,13 +18,16 @@
 			import mx.collections.ArrayList;
 			import mx.controls.Alert;
 			import mx.events.FlexEvent;
-			
+			import layers.PlaneLayer;
 			import services.ServerService;
 			
 			private var list:ArrayList;
 			
 			[Inject]
 			public var ss:ServerService;
+
+			[Inject]
+			public var planeLayer:PlaneLayer;
 			
 			protected function group1_creationCompleteHandler(event:FlexEvent):void
 			{
@@ -33,7 +39,6 @@
 				dataGroup.dataProvider = new ArrayList( event.msg as Array );
 			}
 			
-
 			protected function group1_addedToStageHandler(event:Event):void
 			{
 				//初始化IOC 这句话必须加在addedToStage事件中
@@ -42,6 +47,24 @@
 				ss.addEventListener(ResultEvent.FriendsOK, onFriendsOKHandler );
 				
 				ss.getFriends();
+			}
+
+			protected function group1_rollOverHandler(event:MouseEvent):void
+			{
+				planeLayer.visible = false;
+			}
+
+			protected function group1_rollOutHandler(event:MouseEvent):void
+			{
+				planeLayer.visible = true;
+			}
+
+
+			protected function group1_clickHandler(event:MouseEvent):void
+			{
+				if ( planeLayer.flying ){
+					planeLayer.removePlane();
+				}
 			}
 
 		]]>

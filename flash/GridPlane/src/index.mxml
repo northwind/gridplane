@@ -13,6 +13,8 @@
 		<![CDATA[
 			import events.ResultEvent;
 			
+			import layers.PlaneLayer;
+			
 			import mx.controls.Alert;
 			
 			import services.ServerService;
@@ -20,11 +22,16 @@
 			[Inject]
 			public var ss:ServerService;
 			
+			[Inject]
+			public var plane:PlaneLayer;
+			
 			protected function application1_addedToStageHandler(event:Event):void
 			{
 				dispatchEvent(new Event('configureIOC', true));
 				
 				ss.addEventListener( ResultEvent.EROOR, onResultErrorHandler );
+				
+				this.addElement( plane );
 			}
 			
 			private function onResultErrorHandler( event:ResultEvent  ):void

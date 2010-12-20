@@ -3,10 +3,14 @@
 					  xmlns:s="library://ns.adobe.com/flex/spark" 
 					  xmlns:mx="library://ns.adobe.com/flex/mx" xmlns:components="components.*"
 					  xmlns:sf="http://www.spicefactory.org/parsley"
+					  rollOver="group1_rollOverHandler(event)" 
+					  rollOut="group1_rollOutHandler(event)" 
 					  addedToStage="group1_addedToStageHandler(event)" >
 	<fx:Script>
 		<![CDATA[
 			import layers.PlaneLayer;
+			
+			import mx.core.BitmapAsset;
 			
 			import skins.SavePlaneButtnSkin;
 
@@ -18,14 +22,28 @@
 			
 			protected function imagebutton1_clickHandler(event:MouseEvent):void
 			{
-				var bitmapData:BitmapData = new BitmapData( planeSource.width, planeSource.height );
-				planeLayer.setPlane( bitmapData );
+				if ( !planeLayer.flying ){
+					var bitmapAsset:BitmapAsset = new planeSource() as BitmapAsset ;
+					planeLayer.setPlane( bitmapAsset.bitmapData );
+				}else{
+					planeLayer.removePlane();
+				}
 			}
 
 
 			protected function group1_addedToStageHandler(event:Event):void
 			{
 				dispatchEvent(new Event('configureIOC', true));
+			}
+
+			protected function group1_rollOverHandler(event:MouseEvent):void
+			{
+				planeLayer.visible = false;
+			}
+
+			protected function group1_rollOutHandler(event:MouseEvent):void
+			{
+				planeLayer.visible = true;
 			}
 
 		]]>
@@ -40,7 +58,7 @@
 		]]>
 	</fx:Script>
 	
-	<s:Rect radiusX="5" width="120%" height="120%">
+	<s:Rect radiusX="5" width="150" height="45">
 		<s:fill>
 			<s:SolidColor color="0xaaaaaa" alpha="0.3" />
 		</s:fill>
