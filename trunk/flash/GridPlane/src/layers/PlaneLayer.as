@@ -88,6 +88,7 @@ package layers
 				this.removeChild( this.planeBitmap );
 				this.planeBitmap.bitmapData.dispose();
 				this.planeBitmap = null;
+				this.plane = null;
 			} 		
 			this.flying = false;
 			this.invalidateDisplayList();
@@ -104,12 +105,23 @@ package layers
 			} 
 			
 			this.flying = true;
+			this.plane = plane;
 			this.planeBitmap = new Bitmap( plane.bitmapData.clone() );
 			
 			this.invalidateDisplayList();
 			
 			setPos();
 			addListeners();
+		}
+		
+		public function route() :void 
+		{
+			this.plane.degree = this.plane.degree + 90;
+			var angle_in_radians : Number = Math.PI * 2 * ( this.plane.degree / 360 );
+			
+			this.planeBitmap.transform.matrix.rotate( angle_in_radians );
+			
+			this.dispatchEvent( new Event( Event.CHANGE ) );
 		}
 	}
 }
