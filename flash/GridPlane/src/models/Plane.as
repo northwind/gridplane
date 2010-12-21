@@ -16,7 +16,8 @@ package models
 		public var values:Array = [ [-1,-1,9,-1,-1],
 									[ 1, 1,1, 1, 1],
 									[-1,-1,1,-1,-1],
-									[-1, 1,1, 1,-1]];
+									[-1, 1,1, 1,-1],
+									[-1,-1,-1,-1,-1]];
 		public function Plane()
 		{
 		}
