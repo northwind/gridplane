@@ -15,9 +15,12 @@
 	
 	<fx:Script>
 		<![CDATA[
-			import models.Hardstand;
-			import mx.core.UIComponent;
 			import layers.PlaneLayer;
+			
+			import models.Hardstand;
+			import models.Plane;
+			
+			import mx.core.UIComponent;
 			
 			[Inject]
 			public var planeLayer:PlaneLayer;
@@ -46,14 +49,12 @@
 						oldX = x;
 						oldY = y;
 						
+						var plane:Plane = planeLayer.plane;
 						//如果超出边界
-						if ( ((x + 5) > hardstand.columns) || ((y + 4) > hardstand.rows) ){
+						if ( ((x + plane.width) > hardstand.columns) || ((y + plane.height) > hardstand.rows) || x < 0 || y < 0 ){
 							mirror.visible = false;
 						}else{
-							if ( !setMirror ){
-								setMirror = true;
-								mirror.source = new Bitmap( planeLayer.planeBitmap.bitmapData.clone() );
-							}
+							changeMirror();
 							
 							mirror.x = x * hardstand.cellWidth;
 							mirror.y = y * hardstand.cellHeight;
@@ -66,13 +67,34 @@
 					mirror.visible = false;
 				}
 			}
+			
+			private function changeMirror( force:Boolean = false ) : void
+			{
+				if ( !setMirror || force ){
+					setMirror = true;
+					mirror.source = new Bitmap( planeLayer.getPlaneBitmapData() );
+//					mirror.source = new Bitmap( planeLayer.planeBitmap.bitmapData.clone() );
+//					
+//					var matrix:Matrix = new Matrix();
+//					//原地旋转
+////					matrix.translate( - (mirror.x + mirror.width / 2) ,  - ( mirror.y + mirror.height / 2) );
+//					matrix.translate( - mirror.width / 2 ,  -mirror.height / 2 );
+//					matrix.rotate( Math.PI * 2 * ( planeLayer.plane.degree / 360 ) );
+//					//再更改坐标系
+//					matrix.translate( mirror.width / 2 ,  mirror.height / 2 );	
+////					matrix.translate( (mirror.x + mirror.width / 2)  , ( mirror.y + mirror.height / 2) );	
+//					
+//					mirror.transform.matrix = matrix;
+				}
+			}
 
 			protected function bordercontainer1_addedToStageHandler(event:Event):void
 			{
 				dispatchEvent(new Event('configureIOC', true));
 				
 				planeLayer.addEventListener(Event.CANCEL, onPlaneCancel );
-				this.stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown );	
+				planeLayer.addEventListener(Event.CHANGE, onPlaneChange );
+				//this.stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown );	
 			}
 			
 			private function onPlaneCancel( event:Event ):void
@@ -81,19 +103,20 @@
 				setMirror = false;
 			}
 
+			private function onPlaneChange( event:Event ):void
+			{
+				changeMirror( true );
+			}
+			
 			protected function bordercontainer1_rollOutHandler(event:MouseEvent):void
 			{
 				mirror.visible = false;
 				setMirror = false;
 			}
-
+			
 			private function onKeyDown( event:KeyboardEvent ):void
 			{
-				//R
-				if ( event.keyCode == 82 && planeLayer.flying ){
-					//顺时针旋转90度
-					planeLayer.route();
-				}
+
 			}
 		]]>
 	</fx:Script>
@@ -105,6 +128,6 @@
 	<layers:LineLayer width="100%" height="100%" cellHeight="{hardstand.cellHeight}" cellWidth="{hardstand.cellWidth}"
 					 columns="{hardstand.columns}" rows="{hardstand.rows}" id="lineLayer" />
 	
-	<mx:Image id="mirror" alpha="0.5" visible="false" />
+	<mx:Image id="mirror" alpha="1" visible="false" />
 	
 </s:BorderContainer>
