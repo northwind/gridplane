@@ -11,7 +11,7 @@
 			import layers.PlaneLayer;
 			
 			import models.Plane;
-			
+			import models.Hardstand;
 			import mx.core.BitmapAsset;
 			
 			import skins.SavePlaneButtnSkin;
@@ -22,12 +22,16 @@
 			[Inject]
 			public var planeLayer:PlaneLayer;
 			
+			[Inject]
+			public var hardstand:Hardstand;
+			
 			protected function imagebutton1_clickHandler(event:MouseEvent):void
 			{
 				if ( !planeLayer.flying ){
 					var bitmapAsset:BitmapAsset = new planeSource() as BitmapAsset ;
 					var plane:Plane = new Plane();
 					plane.bitmapData = bitmapAsset.bitmapData;
+					plane.cellScale = hardstand.cellWidth;
 					
 					planeLayer.setPlane( plane );
 				}else{
