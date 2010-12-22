@@ -8,7 +8,7 @@ package models
 	{
 		private var _rows : int = 10; 
 		private var _columns : int = 10; 
-		private var _defaultValue :int = 0;
+		private var _defaultValue :int = -1;
 		
 		[Bindable]
 		public var cellWidth : int = 48;
@@ -66,6 +66,27 @@ package models
 			}
 		}
 
+		public function isValid( x:int, y:int, p:Plane ):Boolean
+		{
+			//最多只能停放MAX_PLANES架飞机
+			if ( planes.length >= MAX_PLANES ){
+				return false;
+			}
+			
+			var arr:Array = p.calcValue();
+			for( var i:int = 0; i< arr.length; i++ ){
+				
+				var tmp:Array = arr[i] as Array;
+				for( var j:int = 0; j< tmp.length; j++ ){
+					//两个都有值则证明有叠加
+					if ( tmp[j] != -1 && values[i][j] != -1  )
+						return false;
+				}
+			}	
+			
+			return true;
+		}
+		
 		//设置战场的值
 		private function setValue( x:int, y:int, v :Array ):void
 		{
@@ -77,6 +98,11 @@ package models
 						this.values[ x + i ][ y + j ] = tmp[ j ];
 				}
 			}
+		}
+		
+		public function canSave() : Boolean
+		{
+			return planes.length + 1 == MAX_PLANES;
 		}
 		
 		public function save():void
