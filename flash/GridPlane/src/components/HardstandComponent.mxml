@@ -38,18 +38,18 @@
 			private var oldY:int;
 			private var setMirror:Boolean = false;
 			
-			protected function bordercontainer1_mouseMoveHandler(event:MouseEvent):void
+			protected function bordercontainer1_mouseMoveHandler(event:MouseEvent = null):void
 			{
 				if ( planeLayer.flying ){
-					var x:int = (this.mouseX - planeLayer.planeBitmap.width / 2) / hardstand.cellWidth;
-					var y:int = (this.mouseY - planeLayer.planeBitmap.height/ 2) / hardstand.cellHeight;
+					var plane:Plane = planeLayer.plane;
+					var x:int = (this.mouseX - plane.width * hardstand.cellWidth / 2) / hardstand.cellWidth;
+					var y:int = (this.mouseY - plane.height * hardstand.cellHeight / 2) / hardstand.cellHeight;
 					
 					//坐标值更改了
 					if ( oldX != x || oldY != y ){
 						oldX = x;
 						oldY = y;
-						
-						var plane:Plane = planeLayer.plane;
+//						trace( "x = " + x + " y = " + y );
 						//如果超出边界
 						if ( ((x + plane.width) > hardstand.columns) || ((y + plane.height) > hardstand.rows) || x < 0 || y < 0 ){
 							mirror.visible = false;
@@ -72,19 +72,10 @@
 			{
 				if ( !setMirror || force ){
 					setMirror = true;
-					mirror.source = new Bitmap( planeLayer.getPlaneBitmapData() );
-//					mirror.source = new Bitmap( planeLayer.planeBitmap.bitmapData.clone() );
-//					
-//					var matrix:Matrix = new Matrix();
-//					//原地旋转
-////					matrix.translate( - (mirror.x + mirror.width / 2) ,  - ( mirror.y + mirror.height / 2) );
-//					matrix.translate( - mirror.width / 2 ,  -mirror.height / 2 );
-//					matrix.rotate( Math.PI * 2 * ( planeLayer.plane.degree / 360 ) );
-//					//再更改坐标系
-//					matrix.translate( mirror.width / 2 ,  mirror.height / 2 );	
-////					matrix.translate( (mirror.x + mirror.width / 2)  , ( mirror.y + mirror.height / 2) );	
-//					
-//					mirror.transform.matrix = matrix;
+					
+					mirror.source = planeLayer.plane.bitmap;
+					
+					bordercontainer1_mouseMoveHandler();
 				}
 			}
 
@@ -128,6 +119,6 @@
 	<layers:LineLayer width="100%" height="100%" cellHeight="{hardstand.cellHeight}" cellWidth="{hardstand.cellWidth}"
 					 columns="{hardstand.columns}" rows="{hardstand.rows}" id="lineLayer" />
 	
-	<mx:Image id="mirror" alpha="1" visible="false" />
+	<mx:Image id="mirror" alpha="0.5" visible="false" />
 	
 </s:BorderContainer>
