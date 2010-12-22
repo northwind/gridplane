@@ -73,12 +73,19 @@ package models
 		public function set rotation( value:int ) : void
 		{
 			value %= 360;
+			//处理负值
+			if ( value < 0 )
+				value += 360;
+			
 			if ( value == 0 || value == 90 || value == 180 || value == 270 ){
 				_rotation = value;
 				//竖放时  重新计算宽高
 				if ( value == 90 || value == 270 ){
 					width = values.length;
 					height = values[0].length;
+				}else{
+					height = values.length;
+					width = values[0].length;
 				}
 			}
 		}

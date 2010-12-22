@@ -136,13 +136,18 @@ package layers
 				trace("route");
 				this.plane.rotation = this.plane.rotation + rotation;
 	
-				if ( this.planeBitmap ){
-					this.removeChild( this.planeBitmap );
-				} 
-				this.planeBitmap = this.plane.bitmap;
-				this.invalidateDisplayList();
-				
-				this.dispatchEvent( new Event( Event.CHANGE ) );
+				try{
+					if ( this.planeBitmap && this.planeBitmap.parent == this ){
+						this.removeChild( this.planeBitmap );
+					} 
+					this.planeBitmap = this.plane.bitmap;
+					
+					this.invalidateDisplayList();
+					
+					this.dispatchEvent( new Event( Event.CHANGE ) );
+					
+				}catch( e:Error ){}
+
 			}
 		}
 	}

@@ -8,7 +8,8 @@
 				   click="bordercontainer1_clickHandler(event)" 
 				   addedToStage="bordercontainer1_addedToStageHandler(event)" 
 				   rollOut="bordercontainer1_rollOutHandler(event)" 
-				   mouseMove="bordercontainer1_mouseMoveHandler(event)" 				    
+				   mouseMove="bordercontainer1_mouseMoveHandler(event)" 	
+				   mouseDown="bordercontainer1_mouseDownHandler(event)" 
 				   xmlns:layers="layers.*">
 	<fx:Declarations>
 	</fx:Declarations>
@@ -37,35 +38,60 @@
 			private var oldX:int;
 			private var oldY:int;
 			private var setMirror:Boolean = false;
+			private var oldPoint:Point = new Point( -1, -1 );
 			
 			protected function bordercontainer1_mouseMoveHandler(event:MouseEvent = null):void
 			{
 				if ( planeLayer.flying ){
-					var plane:Plane = planeLayer.plane;
-					var x:int = (this.mouseX - plane.width * hardstand.cellWidth / 2) / hardstand.cellWidth;
-					var y:int = (this.mouseY - plane.height * hardstand.cellHeight / 2) / hardstand.cellHeight;
+					var point:Point = getXY();
 					
 					//坐标值更改了
-					if ( oldX != x || oldY != y ){
-						oldX = x;
-						oldY = y;
-//						trace( "x = " + x + " y = " + y );
+					if ( !point.equals( oldPoint ) ){
+						oldPoint = point.clone() ;
+						trace( "x = " + point.x + " y = " + point.y );
 						//如果超出边界
-						if ( ((x + plane.width) > hardstand.columns) || ((y + plane.height) > hardstand.rows) || x < 0 || y < 0 ){
-							mirror.visible = false;
-						}else{
+						if ( isValid( point ) ){
 							changeMirror();
 							
-							mirror.x = x * hardstand.cellWidth;
-							mirror.y = y * hardstand.cellHeight;
+							mirror.x = point.x * hardstand.cellWidth;
+							mirror.y = point.y * hardstand.cellHeight;
+							
 							if ( mirror.visible == false )
 								mirror.visible = true;
+						}else{
+							mirror.visible = false;
 						}
 					}
 					
 				} else {
 					mirror.visible = false;
 				}
+			}
+			
+			//获取当前鼠标所在的位置 必须保证已有飞机了
+			private function getXY():Point
+			{
+				var plane:Plane = planeLayer.plane;
+				var x:int = (this.mouseX - plane.width * hardstand.cellWidth / 2) / hardstand.cellWidth;
+				var y:int = (this.mouseY - plane.height * hardstand.cellHeight / 2) / hardstand.cellHeight;
+				
+				return new Point( x, y );
+			}
+			
+			private function isValid( point:Point ) : Boolean
+			{
+				var ret:Boolean = false;
+				var x:int = point.x, y:int = point.y;
+				var plane:Plane = planeLayer.plane;
+				
+				//没有超出边界
+				if ( ((x + plane.width) < hardstand.columns) && ((y + plane.height) < hardstand.rows) && x > 0 && y > 0 ){
+					//没有和已有飞机叠加
+					if ( hardstand.isValid( x,y, plane ) )
+						ret = true;
+				}
+				
+				return ret;
 			}
 			
 			private function changeMirror( force:Boolean = false ) : void
@@ -85,6 +111,7 @@
 				
 				planeLayer.addEventListener(Event.CANCEL, onPlaneCancel );
 				planeLayer.addEventListener(Event.CHANGE, onPlaneChange );
+				
 				//this.stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown );	
 			}
 			
@@ -109,6 +136,21 @@
 			{
 
 			}
+
+			protected function bordercontainer1_mouseDownHandler(event:MouseEvent):void
+			{
+				trace( " bordercontainer1_mouseDownHandler click" );
+				if ( planeLayer.flying ){
+					var point:Point = getXY();
+					if ( isValid( point ) ){
+						hardstand.setPlane( point.x, point.y, planeLayer.plane );
+						
+						//取消显示飞机
+						planeLayer.removePlane();
+					}
+				}
+			}
+
 		]]>
 	</fx:Script>
 	

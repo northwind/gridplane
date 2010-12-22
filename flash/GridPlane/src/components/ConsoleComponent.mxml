@@ -10,8 +10,9 @@
 		<![CDATA[
 			import layers.PlaneLayer;
 			
-			import models.Plane;
 			import models.Hardstand;
+			import models.Plane;
+			
 			import mx.core.BitmapAsset;
 			
 			import skins.SavePlaneButtnSkin;
@@ -55,6 +56,14 @@
 				planeLayer.visible = true;
 			}
 
+
+			protected function imagebutton2_clickHandler(event:MouseEvent):void
+			{
+				if ( hardstand.canSave() ){
+					hardstand.save();
+				}
+			}
+
 		]]>
 	</fx:Script>
 	<fx:Declarations>
@@ -75,6 +84,6 @@
 
 	<s:HGroup gap="20" horizontalCenter="0" verticalCenter="0" >
 		<components:ImageButton skinClass="skins.SetPlaneButtnSkin" click="imagebutton1_clickHandler(event)" />
-		<components:ImageButton skinClass="skins.SavePlaneButtnSkin" />		
+		<components:ImageButton skinClass="skins.SavePlaneButtnSkin" click="imagebutton2_clickHandler(event)" />		
 	</s:HGroup>
 </s:Group>
