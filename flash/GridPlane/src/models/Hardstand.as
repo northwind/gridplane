@@ -2,9 +2,14 @@ package models
 {
 	import events.ResultEvent;
 	
+	import flash.events.Event;
+	import flash.events.EventDispatcher;
+	
 	import services.ServerService;
 	
-	public class Hardstand
+	[Event(name="", type="")]
+	
+	public class Hardstand extends EventDispatcher
 	{
 		private var _rows : int = 10; 
 		private var _columns : int = 10; 
@@ -63,6 +68,8 @@ package models
 				planes.push( p );
 				
 				setValue( x, y, p.calcValue() );
+				
+				this.dispatchEvent( new Event( Event.CHANGE ) );
 			}
 		}
 
@@ -79,7 +86,7 @@ package models
 				var tmp:Array = arr[i] as Array;
 				for( var j:int = 0; j< tmp.length; j++ ){
 					//两个都有值则证明有叠加
-					if ( tmp[j] != -1 && values[i][j] != -1  )
+					if ( tmp[ j ] != -1 && values[ y + i ][ x + j ] != -1  )
 						return false;
 				}
 			}	
@@ -95,7 +102,7 @@ package models
 				for( var j:int = 0; j< tmp.length; j++ ){
 					//-1时 直接跳过 相当于透明
 					if ( tmp[ j ] != -1 )
-						this.values[ x + i ][ y + j ] = tmp[ j ];
+						this.values[ y + i ][ x + j ] = tmp[ j ];
 				}
 			}
 		}
@@ -108,6 +115,14 @@ package models
 		public function save():void
 		{
 			ss.setPlane( values.toString() );
+		}
+		
+		public function clear() : void
+		{
+			generateValues();
+			planes = [];
+			
+			this.dispatchEvent( new Event( Event.CHANGE ) );
 		}
 		
 		public function load():void

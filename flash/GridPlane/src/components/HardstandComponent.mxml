@@ -85,7 +85,7 @@
 				var plane:Plane = planeLayer.plane;
 				
 				//没有超出边界
-				if ( ((x + plane.width) < hardstand.columns) && ((y + plane.height) < hardstand.rows) && x > 0 && y > 0 ){
+				if ( ((x + plane.width) <= hardstand.columns) && ((y + plane.height) <= hardstand.rows) && x >= 0 && y >= 0 ){
 					//没有和已有飞机叠加
 					if ( hardstand.isValid( x,y, plane ) )
 						ret = true;
@@ -105,6 +105,12 @@
 				}
 			}
 
+			private function cancelMirror():void
+			{
+				mirror.visible = false;
+				setMirror = false;				
+			}
+			
 			protected function bordercontainer1_addedToStageHandler(event:Event):void
 			{
 				dispatchEvent(new Event('configureIOC', true));
@@ -112,13 +118,48 @@
 				planeLayer.addEventListener(Event.CANCEL, onPlaneCancel );
 				planeLayer.addEventListener(Event.CHANGE, onPlaneChange );
 				
+				this.hardstand.addEventListener(Event.CHANGE, onHardstandChange );
+				
 				//this.stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown );	
+			}
+			
+			private function onHardstandChange( event:Event ):void
+			{
+				repaint();
+			}
+
+			private var images:Array = [];
+			//重绘战场
+			public function repaint():void
+			{
+				trace("repaint planes : " + hardstand.planes.length);
+				clear();
+				
+				for( var i:int = 0; i< hardstand.planes.length; i++ ){
+					var plane:Plane = (hardstand.planes[i] as Plane);
+					var image:Image = new Image();
+					
+					image.source = plane.bitmap;
+					image.x = plane.x * hardstand.cellWidth;
+					image.y = plane.y * hardstand.cellHeight;
+					
+					images.push( image );
+					
+					this.addElement( image );
+				}				
+			}
+			
+			public function clear():void
+			{
+				for( var i:int = 0; i< images.length; i++ ){
+					this.removeElement( images[ i ] );
+				}
+				images = [];
 			}
 			
 			private function onPlaneCancel( event:Event ):void
 			{
-				mirror.visible = false;
-				setMirror = false;
+				cancelMirror();
 			}
 
 			private function onPlaneChange( event:Event ):void
@@ -144,7 +185,6 @@
 					var point:Point = getXY();
 					if ( isValid( point ) ){
 						hardstand.setPlane( point.x, point.y, planeLayer.plane );
-						
 						//取消显示飞机
 						planeLayer.removePlane();
 					}

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testrun name="" >
+<testsuite  name="Default Test Suite" project="GridPlane">
+<testsuite name="flexUnitTests:TestPlane" type="testcaseclass">
+<testcase name="testCalcValue180" classname="flexUnitTests:TestPlane"/>
+<testcase name="testCalcValue270" classname="flexUnitTests:TestPlane"/>
+<testcase name="testCalcValue90" classname="flexUnitTests:TestPlane"/>
+</testsuite>
+</testsuite>
+</testrun>
