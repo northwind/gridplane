@@ -40,7 +40,6 @@
 				}
 			}
 
-
 			protected function group1_addedToStageHandler(event:Event):void
 			{
 				dispatchEvent(new Event('configureIOC', true));
@@ -56,12 +55,16 @@
 				planeLayer.visible = true;
 			}
 
-
 			protected function imagebutton2_clickHandler(event:MouseEvent):void
 			{
 				if ( hardstand.canSave() ){
 					hardstand.save();
 				}
+			}
+
+			protected function imagebutton3_clickHandler(event:MouseEvent):void
+			{
+				hardstand.clear();
 			}
 
 		]]>
@@ -84,6 +87,7 @@
 
 	<s:HGroup gap="20" horizontalCenter="0" verticalCenter="0" >
 		<components:ImageButton skinClass="skins.SetPlaneButtnSkin" click="imagebutton1_clickHandler(event)" />
-		<components:ImageButton skinClass="skins.SavePlaneButtnSkin" click="imagebutton2_clickHandler(event)" />		
+		<components:ImageButton skinClass="skins.SavePlaneButtnSkin" click="imagebutton2_clickHandler(event)" />
+		<components:ImageButton skinClass="skins.ClearPlaneButtnSkin" click="imagebutton3_clickHandler(event)" />
 	</s:HGroup>
 </s:Group>
