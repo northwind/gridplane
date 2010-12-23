@@ -17,8 +17,6 @@
   </compiler>
   <applications>
     <application path="index.mxml"/>
-    <application path="FlexUnitCompilerApplication.mxml"/>
-    <application path="FlexUnitApplication.mxml"/>
   </applications>
   <modules/>
   <buildCSSFiles/>
