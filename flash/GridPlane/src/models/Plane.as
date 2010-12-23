@@ -6,7 +6,7 @@ package models
 	import flash.geom.Matrix;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
-
+	
 	public class Plane
 	{
 		public var bitmapData:BitmapData;
@@ -19,9 +19,9 @@ package models
 		
 		private var _rotation:int = 0;	//顺时针旋转的角度
 		public var values:Array = [ [-1,-1,9,-1,-1],
-									[ 1, 1,1, 1, 1],
-									[-1,-1,1,-1,-1],
-									[-1, 1,1, 1,-1]];
+			[ 1, 1,1, 1, 1],
+			[-1,-1,1,-1,-1],
+			[-1, 1,1, 1,-1]];
 		public var cellScale :int = 48;
 		
 		public function Plane( )
@@ -49,12 +49,15 @@ package models
 					
 					//水平翻转
 					for( j = 0; j< height; j++ ){
-						arr[ j ] = arr[ j ].reverse();
+						(arr[ j ] as Array).reverse();
 					}
 					
 					break;
 				case 180:
-					arr = values.reverse();
+					//FUCK 太SB了，reverse居然更改原数组的位置
+					for( i = values.length - 1; i >= 0; i-- ){
+						arr.push( values[ i ] ); 
+					}
 					break;
 				case 270:
 					for( j = 0; j< height; j++ ){
@@ -104,7 +107,7 @@ package models
 		public function get bitmap() :Bitmap
 		{
 			var max:int = Math.max(this.bitmapData.width, this.bitmapData.height);
-
+			
 			//过滤白底
 			var colorTransform:ColorTransform = new ColorTransform();
 			//			colorTransform.color = 0x000000;
@@ -141,7 +144,7 @@ package models
 			var dataClip:BitmapData = new BitmapData( rect.width, rect.height , true, 0x000000 ); 
 			dataClip.draw( data, new Matrix(1,0,0,1, -from.x, -from.y), colorTransform, null, rect );
 			
-//			dataClip.colorTransform( dataClip.rect, colorTransform );
+			//			dataClip.colorTransform( dataClip.rect, colorTransform );
 			
 			var ret:Bitmap = new Bitmap( dataClip );	
 			
