@@ -5,6 +5,7 @@
 					  xmlns:sf="http://www.spicefactory.org/parsley"
 					  rollOver="group1_rollOverHandler(event)" 
 					  rollOut="group1_rollOutHandler(event)" 
+					  height="45"
 					  addedToStage="group1_addedToStageHandler(event)" >
 	<fx:Script>
 		<![CDATA[
@@ -14,11 +15,21 @@
 			import models.Plane;
 			
 			import mx.core.BitmapAsset;
+			import mx.events.FlexEvent;
 			
 			import skins.SavePlaneButtnSkin;
 
+			[Bindable]
 			[Embed(source="assets/plane1.png")]
-			private var planeSource:Class
+			private var planeIcon:Class
+
+			[Bindable]
+			[Embed(source="assets/clear.png")]
+			private var clearIcon:Class
+			
+			[Bindable]
+			[Embed(source="assets/check.png")]
+			private var saveIcon:Class
 			
 			[Inject]
 			public var planeLayer:PlaneLayer;
@@ -26,23 +37,20 @@
 			[Inject]
 			public var hardstand:Hardstand;
 			
-			protected function imagebutton1_clickHandler(event:MouseEvent):void
-			{
-				if ( !planeLayer.flying ){
-					var bitmapAsset:BitmapAsset = new planeSource() as BitmapAsset ;
-					var plane:Plane = new Plane();
-					plane.bitmapData = bitmapAsset.bitmapData;
-					plane.cellScale = hardstand.cellWidth;
-					
-					planeLayer.setPlane( plane );
-				}else{
-					planeLayer.removePlane();
-				}
-			}
-
 			protected function group1_addedToStageHandler(event:Event):void
 			{
 				dispatchEvent(new Event('configureIOC', true));
+				
+				hardstand.addEventListener(Event.CHANGE, onHandstandChange );
+			}
+			
+			private function onHandstandChange( event:Event ) : void
+			{
+//				if ( hardstand.canSave() ){
+					save.enabled = true;
+//				}else{
+//					save.enabled = false;
+//				}
 			}
 
 			protected function group1_rollOverHandler(event:MouseEvent):void
@@ -55,18 +63,31 @@
 				planeLayer.visible = true;
 			}
 
-			protected function imagebutton2_clickHandler(event:MouseEvent):void
+			protected function plane_clickHandler(event:MouseEvent):void
+			{
+				if ( !planeLayer.flying ){
+					var bitmapAsset:BitmapAsset = new planeIcon() as BitmapAsset ;
+					var plane:Plane = new Plane();
+					plane.bitmapData = bitmapAsset.bitmapData;
+					plane.cellScale = hardstand.cellWidth;
+					
+					planeLayer.setPlane( plane );
+				}else{
+					planeLayer.removePlane();
+				}
+			}
+
+			protected function clear_clickHandler(event:MouseEvent):void
+			{
+				hardstand.clear();
+			}
+
+			protected function save_clickHandler(event:MouseEvent):void
 			{
 				if ( hardstand.canSave() ){
 					hardstand.save();
 				}
 			}
-
-			protected function imagebutton3_clickHandler(event:MouseEvent):void
-			{
-				hardstand.clear();
-			}
-
 		]]>
 	</fx:Script>
 	<fx:Declarations>
@@ -79,15 +100,19 @@
 		]]>
 	</fx:Script>
 	
-	<s:Rect radiusX="5" width="150" height="45">
+	<s:Rect radiusX="5" width="150" top="0" bottom="0" >
 		<s:fill>
 			<s:SolidColor color="0xaaaaaa" alpha="0.3" />
 		</s:fill>
 	</s:Rect>
 
 	<s:HGroup gap="20" horizontalCenter="0" verticalCenter="0" >
-		<components:ImageButton skinClass="skins.SetPlaneButtnSkin" click="imagebutton1_clickHandler(event)" />
-		<components:ImageButton skinClass="skins.SavePlaneButtnSkin" click="imagebutton2_clickHandler(event)" />
-		<components:ImageButton skinClass="skins.ClearPlaneButtnSkin" click="imagebutton3_clickHandler(event)" />
+		
+		<components:IconButton id="plane" upIcon="{planeIcon}" width="32" height="32" click="plane_clickHandler(event)" />
+		<components:IconButton id="clear" upIcon="{clearIcon}" width="32" height="32" enabled="false" 
+							   click="clear_clickHandler(event)" />
+		<components:IconButton id="save" upIcon="{saveIcon}" width="32" height="32" enabled="false"
+							   click="save_clickHandler(event)" />
+		
 	</s:HGroup>
 </s:Group>
