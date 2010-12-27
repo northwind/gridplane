@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <s:SparkSkin xmlns:fx="http://ns.adobe.com/mxml/2009"
 			 xmlns:s="library://ns.adobe.com/flex/spark"
-			 creationComplete="sparkskin1_creationCompleteHandler(event)" 
+			 addedToStage="sparkskin1_addedToStageHandler(event)"  
 			 >
 	
 	<!-- host component -->
@@ -18,46 +18,34 @@
 			import mx.styles.StyleManager;
 			
 			import spark.filters.ColorMatrixFilter;
+			
 			private var matrix:Array = [0.5, 0.5, 0.5, 0, 0,
 										0.5, 0.5, 0.5, 0, 0,
 										0.5, 0.5, 0.5, 0, 0,
 										0, 0, 0, 1, 0];
+			private var colorMatrixFilter = new ColorMatrixFilter( matrix );
+			
+			var color:Number = 0x33CCFF;
+			var alpha:Number = 0.8;
+			var blurX:Number = 35;
+			var blurY:Number = 35;
+			var strength:Number = 2;
+			var inner:Boolean = false;
+			var knockout:Boolean = false;
+			var quality:Number = BitmapFilterQuality.HIGH;
+			
+			private  
+			return new GlowFilter(color,
+				alpha,
+				blurX,
+				blurY,
+				strength,
+				quality,
+				inner,
+				knockout);
+
 			
 			override protected function updateDisplayList(unscaledWidth:Number, unscaledHeight:Number) : void
-			{
-//				trace( " IconButton updateDisplayList " );
-//				var state:String = this.currentState;;
-//				
-//				var icon:Class = getStyle( state + "Icon" );
-//				//如果设置了其他状态的icon则显示，没有采用默认并增加默认效果
-//				if ( icon )
-//				{
-//					upImage.source = icon;
-//				}else{
-//					upImage.source = getStyle( "upIcon" );
-//					
-//					if ( state == "disabled" ){
-//						upImage.filters = [ new ColorMatrixFilter( matrix ) ];
-//						upImage.blendMode="normal";
-//					}	
-//					else if ( state == "over" ){
-//						upImage.filters = [];
-//						upImage.blendMode="lighten";
-//					}
-//					else if ( state == "down" ){
-//						upImage.filters = [];
-//						upImage.blendMode="darken";
-//					}else{
-//						upImage.filters = [];
-//						upImage.blendMode="normal";
-//					}
-//				}
-//				
-				super.updateDisplayList(unscaledWidth, unscaledHeight);
-			}
-			
-
-			protected function sparkskin1_creationCompleteHandler(event:FlexEvent):void
 			{
 				var state:String = this.currentState;
 				var upIcon:Class = getStyle( "upIcon" );
@@ -65,12 +53,36 @@
 				var downIcon:* = getStyle( "downIcon" );
 				var disabledIcon:* = getStyle( "disabledIcon" );
 				
-				upImage.source = upIcon;
-//				overImage.source = overIcon === undefined ? upIcon : overIcon;
-//				downImage.source =  downIcon || upIcon;
-//				disabledImage.source =  this.styleManager.isValidStyleValue( overIcon ) ? overIcon : upIcon;
+				if ( upImage )
+					upImage.source = upIcon;
+				if ( overImage ){
+					if ( overIcon ){
+						overImage.source = overIcon;
+					}else{	
+						overImage.source = upIcon;
+						disabledImage.blendMode
+						disabledImage.filters = new f 
+					}
+					
+				}
+				if ( downImage )
+					downImage.source =  downIcon || upIcon;
+				if ( disabledImage ){
+					if ( disabledIcon ){
+						disabledImage.source =  disabledIcon;
+						disabledImage.filters = [];
+					}else{
+						disabledImage.source =  upIcon;
+						disabledImage.filters = [ colorMatrixFilter ];
+					}
+				}
 				
-//				disabledImage.filters = [ new ColorMatrixFilter( matrix ) ];
+				super.updateDisplayList(unscaledWidth, unscaledHeight);
+			}
+			
+			protected function sparkskin1_addedToStageHandler(event:Event):void
+			{
+
 			}
 
 		]]>
@@ -84,8 +96,10 @@
 		<s:State name="disabled" />
 	</s:states>
 	
+	
+	
 	<s:BitmapImage id="upImage" left="0" right="0" top="0" bottom="0" includeIn="up" />
-	<s:BitmapImage id="overImage" blendMode="lighten" left="0" right="0" top="0" bottom="0" includeIn="over" />
+	<s:BitmapImage id="overImage" left="0" right="0" top="0" bottom="0" includeIn="over" />
 	<s:BitmapImage id="downImage" blendMode="darken" left="0" right="0" top="0" bottom="0" includeIn="down" />
 	<s:BitmapImage id="disabledImage" left="0" right="0" top="0" bottom="0" includeIn="disabled" />
 	
