@@ -108,10 +108,10 @@
 
 	<s:HGroup gap="20" horizontalCenter="0" verticalCenter="0" >
 		
-		<components:IconButton id="plane" upIcon="{planeIcon}" width="32" height="32" click="plane_clickHandler(event)" />
-		<components:IconButton id="clear" upIcon="{clearIcon}" width="32" height="32" enabled="false" 
+		<components:IconButton toolTip="添加飞机" id="plane" overIcon="{clearIcon}" downIcon="{saveIcon}" upIcon="{planeIcon}" width="32" height="32" click="plane_clickHandler(event)" />
+		<components:IconButton toolTip="重置飞机" id="clear" upIcon="{clearIcon}" width="32" height="32" enabled="false" 
 							   click="clear_clickHandler(event)" />
-		<components:IconButton id="save" upIcon="{saveIcon}" width="32" height="32" enabled="false"
+		<components:IconButton toolTip="保存飞机" id="save" upIcon="{saveIcon}" width="32" height="32" enabled="false"
 							   click="save_clickHandler(event)" />
 		
 	</s:HGroup>
