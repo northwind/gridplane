@@ -4,15 +4,15 @@ package components
 	
 	import spark.components.Button;
 	
-	[Style(name="upIcon", type="*",inherit="no")]
-	[Style(name="downIcon", type="*",inherit="no")]
-	[Style(name="overIcon", type="*",inherit="no")]
-	[Style(name="disabledIcon", type="*",inherit="no")]
+	//icons
+	[Style(name="iconUp",type="*")]
+	[Style(name="iconOver",type="*")]
+	[Style(name="iconDown",type="*")]
+	[Style(name="iconDisabled",type="*")]
 	
 	public class IconButton extends Button
 	{
-		public var defaultSkin:Class = IconButtnSkin;
-		
+		public static var defaultSkin:Class = IconButtnSkin;
 		public function IconButton()
 		{
 			super();

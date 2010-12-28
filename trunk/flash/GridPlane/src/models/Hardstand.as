@@ -109,7 +109,12 @@ package models
 		
 		public function canSave() : Boolean
 		{
-			return planes.length + 1 == MAX_PLANES;
+			return planes.length == MAX_PLANES;
+		}
+
+		public function hasPlane() : Boolean
+		{
+			return planes.length > 0 ;
 		}
 		
 		public function save():void

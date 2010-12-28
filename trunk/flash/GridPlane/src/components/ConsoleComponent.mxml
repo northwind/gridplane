@@ -5,7 +5,7 @@
 					  xmlns:sf="http://www.spicefactory.org/parsley"
 					  rollOver="group1_rollOverHandler(event)" 
 					  rollOut="group1_rollOutHandler(event)" 
-					  height="45"
+					  height="45"					 
 					  addedToStage="group1_addedToStageHandler(event)" >
 	<fx:Script>
 		<![CDATA[
@@ -17,8 +17,6 @@
 			import mx.core.BitmapAsset;
 			import mx.events.FlexEvent;
 			
-			import skins.SavePlaneButtnSkin;
-
 			[Bindable]
 			[Embed(source="assets/plane1.png")]
 			private var planeIcon:Class
@@ -46,11 +44,18 @@
 			
 			private function onHandstandChange( event:Event ) : void
 			{
-//				if ( hardstand.canSave() ){
+				//保存
+				if ( hardstand.canSave() ){
 					save.enabled = true;
-//				}else{
-//					save.enabled = false;
-//				}
+				}else{
+					save.enabled = false;
+				}
+				//清空战场
+				if ( hardstand.hasPlane() ){
+					clear.enabled = true;
+				}else{
+					clear.enabled = false;
+				}
 			}
 
 			protected function group1_rollOverHandler(event:MouseEvent):void
@@ -94,12 +99,6 @@
 		<sf:Configure/>
 	</fx:Declarations>
 	
-	<fx:Script>
-		<![CDATA[
-			import skins.SetPlaneButtnSkin;
-		]]>
-	</fx:Script>
-	
 	<s:Rect radiusX="5" width="150" top="0" bottom="0" >
 		<s:fill>
 			<s:SolidColor color="0xaaaaaa" alpha="0.3" />
@@ -108,10 +107,10 @@
 
 	<s:HGroup gap="20" horizontalCenter="0" verticalCenter="0" >
 		
-		<components:IconButton toolTip="添加飞机" id="plane" overIcon="{clearIcon}" downIcon="{saveIcon}" upIcon="{planeIcon}" width="32" height="32" click="plane_clickHandler(event)" />
-		<components:IconButton toolTip="重置飞机" id="clear" upIcon="{clearIcon}" width="32" height="32" enabled="false" 
+		<components:SingleIconButton toolTip="添加飞机" id="plane" icon="{planeIcon}" width="32" height="32" click="plane_clickHandler(event)" />
+		<components:SingleIconButton toolTip="重置飞机" id="clear" icon="{clearIcon}" width="32" height="32" enabled="false" 
 							   click="clear_clickHandler(event)" />
-		<components:IconButton toolTip="保存飞机" id="save" upIcon="{saveIcon}" width="32" height="32" enabled="false"
+		<components:SingleIconButton toolTip="保存飞机" id="save" icon="{saveIcon}" width="32" height="32" enabled="false"
 							   click="save_clickHandler(event)" />
 		
 	</s:HGroup>
