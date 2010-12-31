@@ -99,7 +99,7 @@
 				if ( !setMirror || force ){
 					setMirror = true;
 					
-					mirror.source = planeLayer.plane.bitmap;
+					mirror.source = planeLayer.plane.getBitmap();
 					
 					bordercontainer1_mouseMoveHandler();
 				}
@@ -139,7 +139,7 @@
 					var plane:Plane = (hardstand.planes[i] as Plane);
 					var image:Image = new Image();
 					
-					image.source = plane.bitmap;
+					image.source = plane.getBitmap();
 					image.x = plane.x * hardstand.cellWidth;
 					image.y = plane.y * hardstand.cellHeight;
 					

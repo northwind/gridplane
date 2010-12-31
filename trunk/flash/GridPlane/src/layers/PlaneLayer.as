@@ -122,7 +122,7 @@ package layers
 			this.flying = true;
 			this.plane = plane;
 //			this.planeBitmap = new Bitmap( plane.bitmapData.clone() );
-			this.planeBitmap = plane.bitmap;
+			this.planeBitmap = plane.getBitmap();
 			
 			this.invalidateDisplayList();
 			
@@ -140,7 +140,7 @@ package layers
 					if ( this.planeBitmap && this.planeBitmap.parent == this ){
 						this.removeChild( this.planeBitmap );
 					} 
-					this.planeBitmap = this.plane.bitmap;
+					this.planeBitmap = this.plane.getBitmap();
 					
 					this.invalidateDisplayList();
 					

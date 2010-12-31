@@ -1,7 +1,10 @@
 package models
 {
+	import com.adobe.serialization.json.JSON;
+	
 	import events.ResultEvent;
 	
+	import flash.display.BitmapData;
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
 	
@@ -9,6 +12,7 @@ package models
 	
 	[Event(name="", type="")]
 	
+//	[InjectConstructor]
 	public class Hardstand extends EventDispatcher
 	{
 		private var _rows : int = 10; 
@@ -19,7 +23,7 @@ package models
 		public var cellWidth : int = 48;
 		[Bindable]
 		public var cellHeight : int = 48;		
-		
+
 		public var width : int = 480;
 		public var height : int = 480;
 		
@@ -28,11 +32,18 @@ package models
 
 		public var MAX_PLANES:int = 3;
 		
-		[Inject]
-		public var ss:ServerService;
+		private var ss:ServerService;	
 		
-		public function Hardstand()
+		[Inject]
+		public function Hardstand( ss:ServerService )
 		{
+			if ( ss ){
+				this.ss = ss;
+				ss.addEventListener( ResultEvent.GetPlaneOK, onGetPlaneOK);
+			}
+			else{
+				trace( "WANING: Hardstand ServerService is null " );				
+			}
 		}
 		
 		private function generateValues():void
@@ -53,8 +64,6 @@ package models
 		[Init]
 		public function init():void
 		{
-			ss.addEventListener( ResultEvent.GetPlaneOK, onGetPlaneOK);
-			
 			generateValues();
 		}
 		
@@ -117,9 +126,16 @@ package models
 			return planes.length > 0 ;
 		}
 		
+		public function createPlane( bitmapData :BitmapData ) :Plane
+		{
+			var plane:Plane = new Plane( bitmapData, cellWidth );
+			
+			return plane;
+		}
+		
 		public function save():void
 		{
-			ss.setPlane( values.toString() );
+			ss.setPlane( this.toString() );
 		}
 		
 		public function clear() : void
@@ -168,5 +184,15 @@ package models
 			
 			width = _columns * this.cellWidth;
 		}		
+		
+		public override function toString() : String
+		{
+			var obj:Object = {
+				values : this.values,
+				planes : this.planes,
+				rows   : this.rows
+			};
+			return JSON.encode( this );
+		}
 	}
 }
