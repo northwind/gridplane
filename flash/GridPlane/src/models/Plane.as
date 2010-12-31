@@ -1,15 +1,20 @@
 package models
 {
+	import com.adobe.serialization.json.JSON;
+	
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
+	import flash.events.EventDispatcher;
 	import flash.geom.ColorTransform;
 	import flash.geom.Matrix;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	
-	public class Plane
+	public class Plane extends EventDispatcher
 	{
-		public var bitmapData:BitmapData;
+		private var bitmapData:BitmapData;
+		private var _rotation:int = 0;	//顺时针旋转的角度
+		private var cellScale :int;
 		
 		public var width:int = 5;
 		public var height:int = 4;
@@ -17,15 +22,15 @@ package models
 		public var x:int = 0;
 		public var y:int = 0;
 		
-		private var _rotation:int = 0;	//顺时针旋转的角度
 		public var values:Array = [ [-1,-1,9,-1,-1],
 			[ 1, 1,1, 1, 1],
 			[-1,-1,1,-1,-1],
 			[-1, 1,1, 1,-1]];
-		public var cellScale :int = 48;
 		
-		public function Plane( )
+		public function Plane( bitmapData : BitmapData, cellScale : int = 48 )
 		{
+			this.bitmapData = bitmapData;
+			this.cellScale = cellScale;
 		}
 		
 		//顺时针旋转
@@ -104,8 +109,13 @@ package models
 		 * @return Bitmap
 		 * 
 		 */		
-		public function get bitmap() :Bitmap
+		public function getBitmap() :Bitmap
 		{
+			//没有设置返回空
+			if ( !this.bitmapData ){
+				return new Bitmap();	
+			}
+			
 			var max:int = Math.max(this.bitmapData.width, this.bitmapData.height);
 			
 			//过滤白底
@@ -149,6 +159,14 @@ package models
 			var ret:Bitmap = new Bitmap( dataClip );	
 			
 			return ret;
+		}
+		
+		public override function toString() : String
+		{
+//			return '{' + ['"x":'+this.x, 
+//						  '"y":' + this.y, 
+//			  			  '"rotation":' + this.rotation ].join(',') + '}';
+			return JSON.encode( this );
 		}
 	}
 }

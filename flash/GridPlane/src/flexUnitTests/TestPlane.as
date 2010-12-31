@@ -1,5 +1,7 @@
 package flexUnitTests
 {
+	import flash.display.BitmapData;
+	
 	import flexunit.framework.Assert;
 	
 	import models.Plane;
@@ -29,7 +31,7 @@ package flexUnitTests
 		[Test]
 		public function testCalcValue90():void
 		{
-			var plane:Plane = new Plane();
+			var plane:Plane = new Plane( new BitmapData(240,196 ) );
 			plane.rotation = 90;
 		
 			var ret:Array = [  [-1, -1, 1, -1],
@@ -46,7 +48,7 @@ package flexUnitTests
 		[Test]
 		public function testCalcValue180():void
 		{
-			var plane:Plane = new Plane();
+			var plane:Plane = new Plane( new BitmapData(240,196 ) );
 			plane.rotation = 180;
 			
 			var ret:Array = [  [ -1, 1, 1, 1, -1],
@@ -72,7 +74,7 @@ package flexUnitTests
 		[Test]
 		public function testCalcValue270():void
 		{
-			var plane:Plane = new Plane();
+			var plane:Plane = new Plane( new BitmapData(240,196 ) );
 			plane.rotation = 270;
 			
 			var ret:Array = [  [-1, 1, -1, -1],
@@ -84,6 +86,21 @@ package flexUnitTests
 			trace( "270 : " + plane.calcValue().toString()  );
 			
 			Assert.assertTrue(  plane.calcValue().toString() ==  ret.toString() );
-		}		
+		}	
+
+		[Test]
+		public function testtoString():void
+		{
+			var plane:Plane = new Plane( new BitmapData(240,196 ) );
+			plane.rotation = 270;
+			
+			var ret:Array = [  [-1, 1, -1, -1],
+				[ -1, 1,-1,  1],
+				[ 9,  1, 1,  1],
+				[ -1, 1,-1, 1],
+				[-1,  1,-1,-1] ];
+			trace( plane.toString() );
+			Assert.assertTrue(  true );
+		}
 	}
 }

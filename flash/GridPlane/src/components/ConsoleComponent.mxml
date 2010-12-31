@@ -56,6 +56,12 @@
 				}else{
 					clear.enabled = false;
 				}
+				//添加飞机
+				if ( hardstand.canSave() ){
+					plane.enabled = false;
+				}else{
+					plane.enabled = true;
+				}				
 			}
 
 			protected function group1_rollOverHandler(event:MouseEvent):void
@@ -72,10 +78,11 @@
 			{
 				if ( !planeLayer.flying ){
 					var bitmapAsset:BitmapAsset = new planeIcon() as BitmapAsset ;
-					var plane:Plane = new Plane();
-					plane.bitmapData = bitmapAsset.bitmapData;
-					plane.cellScale = hardstand.cellWidth;
+//					var plane:Plane = new Plane();
+//					plane.bitmapData = bitmapAsset.bitmapData;
+//					plane.cellScale = hardstand.cellWidth;
 					
+					var plane:Plane = hardstand.createPlane( bitmapAsset.bitmapData );
 					planeLayer.setPlane( plane );
 				}else{
 					planeLayer.removePlane();
